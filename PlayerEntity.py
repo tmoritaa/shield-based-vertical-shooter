@@ -6,7 +6,8 @@ class PlayerEntity(Entity):
     def __init__(self, world, x, y):
         super(PlayerEntity, self).__init__(world)
         self.body = None
-        self.buttonDown = {"u" : -1, "d" : -1, "l" : -1, "r" : -1}
+        self.buttonDownOrder = {"u" : -1, "d" : -1, "l" : -1, "r" : -1}
+        self.keyDownCount = 0
         self._initBody(x, y)
 
 
@@ -32,26 +33,59 @@ class PlayerEntity(Entity):
 
 
     def handleInput(self, event):
-            if event.type == pygame.KEYDOWN:
-                curVel = self._getPlayerVelocity()
-                setVelx = curVel[0]
-                setVely = curVel[1]
-                if event.key == pygame.K_w:
-                    setVely = 5.0
-                elif event.key == pygame.K_s:
-                    setVely = -5.0
-                if event.key == pygame.K_a:
-                    setVelx = -5.0
-                elif event.key == pygame.K_d:
-                    setVelx = 5.0
-                self._setPlayerVelocity(setVelx, setVely)
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_w:
+                self.buttonDownOrder['u'] = self.keyDownCount
+            elif event.key == pygame.K_s:
+                self.buttonDownOrder['d'] = self.keyDownCount
+            if event.key == pygame.K_a:
+                self.buttonDownOrder['l'] = self.keyDownCount
+            elif event.key == pygame.K_d:
+                self.buttonDownOrder['r'] = self.keyDownCount
 
-            if event.type == pygame.KEYUP:
-                curVel = self._getPlayerVelocity()
-                setVelx = curVel[0]
-                setVely = curVel[1]
-                if event.key == pygame.K_w or event.key == pygame.K_s:
-                    setVely = 0.0
-                if event.key == pygame.K_a or event.key == pygame.K_d:
-                    setVelx = 0.0
-                self._setPlayerVelocity(setVelx, setVely)
+            self.keyDownCount += 1
+
+            self._determineAndSetPlayerVelocity()
+
+        if event.type == pygame.KEYUP:
+            cancelCount = 0
+            if event.key == pygame.K_w:
+                cancelCount = self.buttonDownOrder['u']
+                self.buttonDownOrder['u'] = -1
+            elif event.key == pygame.K_s:
+                cancelCount = self.buttonDownOrder['d']
+                self.buttonDownOrder['d'] = -1 
+            if event.key == pygame.K_a:
+                cancelCount = self.buttonDownOrder['l']
+                self.buttonDownOrder['l'] = -1
+            elif event.key == pygame.K_d:
+                cancelCount = self.buttonDownOrder['r']
+                self.buttonDownOrder['r'] = -1
+
+            self.keyDownCount -= 1
+
+            for item in self.buttonDownOrder.items():
+                if item[1] > cancelCount:
+                    self.buttonDownOrder[item[0]] -= 1
+    
+            self._determineAndSetPlayerVelocity()
+
+
+    def _determineAndSetPlayerVelocity(self):
+        velX = 0
+        velY = 0
+        upVal = self.buttonDownOrder['u']
+        downVal = self.buttonDownOrder['d']
+        leftVal = self.buttonDownOrder['l']
+        rightVal = self.buttonDownOrder['r']
+
+        if (upVal == 0 or upVal == 1):
+            velY = 5
+        elif (downVal == 0 or downVal == 1):
+            velY = -5
+        if (leftVal == 0 or leftVal == 1):
+            velX = -5
+        elif (rightVal == 0 or rightVal == 1):
+            velX = 5
+
+        self._setPlayerVelocity(velX, velY)
