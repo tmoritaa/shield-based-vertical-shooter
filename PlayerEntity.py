@@ -32,6 +32,30 @@ class PlayerEntity(Entity):
         return (x, y)
 
 
+    def _determineAndSetPlayerVelocity(self):
+        velX = 0
+        velY = 0
+        upVal = self.buttonDownOrder['u']
+        downVal = self.buttonDownOrder['d']
+        leftVal = self.buttonDownOrder['l']
+        rightVal = self.buttonDownOrder['r']
+
+        if (upVal == 0 or upVal == 1):
+            velY = 5
+        elif (downVal == 0 or downVal == 1):
+            velY = -5
+        if (leftVal == 0 or leftVal == 1):
+            velX = -5
+        elif (rightVal == 0 or rightVal == 1):
+            velX = 5
+
+        self._setPlayerVelocity(velX, velY)
+
+
+    def move(self):
+        self._determineAndSetPlayerVelocity()
+
+
     def handleInput(self, event):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_w:
@@ -44,8 +68,6 @@ class PlayerEntity(Entity):
                 self.buttonDownOrder['r'] = self.keyDownCount
 
             self.keyDownCount += 1
-
-            self._determineAndSetPlayerVelocity()
 
         if event.type == pygame.KEYUP:
             cancelCount = 0
@@ -67,25 +89,4 @@ class PlayerEntity(Entity):
             for item in self.buttonDownOrder.items():
                 if item[1] > cancelCount:
                     self.buttonDownOrder[item[0]] -= 1
-    
-            self._determineAndSetPlayerVelocity()
 
-
-    def _determineAndSetPlayerVelocity(self):
-        velX = 0
-        velY = 0
-        upVal = self.buttonDownOrder['u']
-        downVal = self.buttonDownOrder['d']
-        leftVal = self.buttonDownOrder['l']
-        rightVal = self.buttonDownOrder['r']
-
-        if (upVal == 0 or upVal == 1):
-            velY = 5
-        elif (downVal == 0 or downVal == 1):
-            velY = -5
-        if (leftVal == 0 or leftVal == 1):
-            velX = -5
-        elif (rightVal == 0 or rightVal == 1):
-            velX = 5
-
-        self._setPlayerVelocity(velX, velY)

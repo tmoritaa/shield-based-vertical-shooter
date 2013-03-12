@@ -1,6 +1,6 @@
-from GraphicsManager import *
-from EntityManager import *
 import pygame
+import GraphicsManager
+import EntityManager 
 
 class Game(object):
     def __init__(self, _graphicsManager, _entityManager, _fps):
@@ -19,22 +19,25 @@ class Game(object):
             self._handleInput()
             self._clock.tick(self.FPS) 
 
+
     def _handleInput(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self._running = False
-            if event.type == pygame.KEYDOWN or event.type == pygame.KEYUP:
+            elif event.type == pygame.KEYDOWN or event.type == pygame.KEYUP:
                 if event.key == pygame.K_ESCAPE:
                     self._running = False
                 else:
-                    entityManager.getPlayerEntity().handleInput(event)
-                    
+                    self._entityManager.getPlayerEntity().handleInput(event)
+            elif event.type == pygame.MOUSEMOTION:
+               self._entityManager.getShieldEntity().handleInput(event) 
+
 
 if __name__ == "__main__":
     SCREEN_WIDTH = 640
     SCREEN_HEIGHT = 480
     FPS = 60.0
-    entityManager = EntityManager(FPS)
-    graphicsManager = GraphicsManager(SCREEN_WIDTH, SCREEN_HEIGHT, entityManager)
+    entityManager = EntityManager.EntityManager(FPS)
+    graphicsManager = GraphicsManager.GraphicsManager(SCREEN_WIDTH, SCREEN_HEIGHT, entityManager)
     game = Game(graphicsManager, entityManager, FPS) 
     game.start()
