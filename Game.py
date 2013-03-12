@@ -17,6 +17,7 @@ class Game(object):
             self._graphicsManager.drawEntities()
             self._entityManager.moveEntities()
             self._handleInput()
+            self._entityManager.destroyEntities()
             self._clock.tick(self.FPS) 
 
 

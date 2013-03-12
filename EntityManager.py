@@ -1,14 +1,17 @@
 from Box2D import *
 from EntityFactory import *
+from CustomContactListener import *
 
 class EntityManager(object):
     def __init__(self, _fps):
         self.TIMESTEP = 1.0 / _fps 
-        self.world = b2World(gravity=(0, 0), doSleep=False)
+        self.world = b2World(contactListener=CustomContactListener(self), 
+                                gravity=(0, 0), doSleep=False)
         self.entityList = [] # for now. Change to object list and change graphics manager to retrieve body from object
         self.playerEntity = None
         self.shieldEntity = None
         self.enemyEntityList = []
+        self.destoryEntityList = []
         self._entityFactory = EntityFactory(self)
         self._initEntities()
 
@@ -20,6 +23,9 @@ class EntityManager(object):
         self.world.Step(self.TIMESTEP, 6, 2)
         self.world.ClearForces()
 
+
+    def destroyEntities(self):
+        self.destoryEntityList = []
 
     # assumes player entity is in first index
     def getPlayerEntity(self):

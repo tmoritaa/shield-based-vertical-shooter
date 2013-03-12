@@ -1,6 +1,7 @@
 class Entity(object):
-    def __init__(self, world):
+    def __init__(self, world, type):
         self.world = world
+        self.type = type
         self.body = None
 
     def __del__(self):

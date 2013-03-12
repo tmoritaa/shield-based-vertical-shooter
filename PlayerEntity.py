@@ -1,10 +1,11 @@
 import pygame
 from Box2D import *
 from Entity import *
+import TypeEnums
 
 class PlayerEntity(Entity):
     def __init__(self, world, x, y):
-        super(PlayerEntity, self).__init__(world)
+        super(PlayerEntity, self).__init__(world, TypeEnums.TYPE_PLAYER)
         self.PLAYER_RADIUS = 0.5
         self.body = None
         self.buttonDownOrder = {"u" : -1, "d" : -1, "l" : -1, "r" : -1}
@@ -15,10 +16,13 @@ class PlayerEntity(Entity):
     def _initBody(self, x, y):
         self.body = self.world.CreateDynamicBody(
                             position=(x, y), 
-                            fixtures=b2FixtureDef(shape=b2CircleShape(radius=self.PLAYER_RADIUS), density=10000)
+                            fixtures=b2FixtureDef( categoryBits=TypeEnums.CATEGORY_PLAYER,
+                                                    maskBits=TypeEnums.CATEGORY_ENEMY,
+                                                    shape=b2CircleShape(radius=self.PLAYER_RADIUS), density=10000)
                             )
         self.body.sleepingAllowed = False
         self.body.fixedRotation = True
+        self.body.userData = self
 
 
     def _setPlayerVelocity(self, velx, vely):

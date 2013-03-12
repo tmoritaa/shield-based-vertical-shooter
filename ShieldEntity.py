@@ -3,10 +3,11 @@ import math
 from Box2D import *
 from Entity import *
 import GraphicsManager
+import TypeEnums
 
 class ShieldEntity(Entity):
     def __init__(self, world, playerEntity):
-        super( ShieldEntity, self ).__init__( world )
+        super( ShieldEntity, self ).__init__( world, TypeEnums.TYPE_SHIELD )
         self.SHIELD_RADIUS = 1.5
         self.SHIELD_RADIAL_VEL_MOD = 20
         self._playerEntity = playerEntity
@@ -19,10 +20,13 @@ class ShieldEntity(Entity):
     def _initBody(self, x, y):
         self.body = self.world.CreateDynamicBody(
                             position=( x, y ), 
-                            fixtures=b2FixtureDef( shape=b2PolygonShape( box=( 1.0, 0.25 ) ), density=0.5 )
+                            fixtures=b2FixtureDef( categoryBits=TypeEnums.CATEGORY_PLAYER,
+                                                   maskBits=TypeEnums.CATEGORY_ENEMY,
+                                                   shape=b2PolygonShape( box=( 1.0, 0.25 ) ), density=0.5 )
                             )
         self.body.sleepingAllowed = False
         self.body.fixedRotation = False
+        self.body.userData = self
         
 
     def move(self):
