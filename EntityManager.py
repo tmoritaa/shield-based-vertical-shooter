@@ -1,12 +1,15 @@
 from Box2D import *
-from PlayerEntity import *
-from ShieldEntity import *
+from EntityFactory import *
 
 class EntityManager(object):
     def __init__(self, _fps):
         self.TIMESTEP = 1.0 / _fps 
         self.world = b2World(gravity=(0, 0), doSleep=False)
         self.entityList = [] # for now. Change to object list and change graphics manager to retrieve body from object
+        self.playerEntity = None
+        self.shieldEntity = None
+        self.enemyEntityList = []
+        self._entityFactory = EntityFactory(self)
         self._initEntities()
 
 
@@ -20,40 +23,18 @@ class EntityManager(object):
 
     # assumes player entity is in first index
     def getPlayerEntity(self):
-        return self.entityList[0]
+        return self.playerEntity
 
 
     # assumes shield entity is in first index
     def getShieldEntity(self):
-        return self.entityList[1]
+        return self.shieldEntity
 
 
     def _initEntities(self):
         playerX = 15
         playerY = 20
 
-        playerEntity = PlayerEntity(self.world, playerX, playerY)
-
-        shieldEntity = ShieldEntity(self.world, playerEntity)
-
-        revJointDef = b2RevoluteJointDef(
-                            bodyA = playerEntity.body,
-                            bodyB = shieldEntity.body,
-                            anchor = playerEntity.body.worldCenter,
-                            enableMotor = True,
-                            maxMotorTorque = 1000,
-                            motorSpeed = 0)
-
-        joint = self.world.CreateJoint(revJointDef)
-
-        shieldEntity.setRevJoint(joint)
+        self._entityFactory.createPlayerAndShieldEntity(playerX, playerY)
+        self._entityFactory.createEnemyEntity(20, 20)
         
-        #dynamicBody1 = self.world.CreateDynamicBody(
-        #                    position=(playerX, playerY + 2), 
-        #                    fixtures=b2FixtureDef(shape=b2PolygonShape(box=(2,0.1)), density=1)
-        #                    )
-        #dynamicBody1.sleepingAllowed = False
-        #dynamicBody1.fixedRotation = True
-        self.entityList.append(playerEntity)
-        self.entityList.append(shieldEntity)
-        #self.entityList.append(self.world.CreateStaticBody(position=(0, 1), shapes=b2PolygonShape(box=(50, 5))))

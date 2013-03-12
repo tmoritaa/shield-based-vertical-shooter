@@ -34,7 +34,7 @@ class GraphicsManager(object):
                 shape = fixture.shape
                 if isinstance(shape, b2CircleShape):
                     position = GraphicsManager.performScreenSpaceTransform( shape.pos, entity.body.transform )
-                    radius = int( shape.radius ) * GraphicsManager.PIXELS_PER_METER
+                    radius = int(round(shape.radius * GraphicsManager.PIXELS_PER_METER))
                     pygame.draw.circle(self._screen, (255, 255, 255, 255), position, radius)
                 else:
                     vertices = [GraphicsManager.performScreenSpaceTransform( v, entity.body.transform ) 

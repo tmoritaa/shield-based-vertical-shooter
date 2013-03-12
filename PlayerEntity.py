@@ -5,6 +5,7 @@ from Entity import *
 class PlayerEntity(Entity):
     def __init__(self, world, x, y):
         super(PlayerEntity, self).__init__(world)
+        self.PLAYER_RADIUS = 0.5
         self.body = None
         self.buttonDownOrder = {"u" : -1, "d" : -1, "l" : -1, "r" : -1}
         self.keyDownCount = 0
@@ -14,7 +15,7 @@ class PlayerEntity(Entity):
     def _initBody(self, x, y):
         self.body = self.world.CreateDynamicBody(
                             position=(x, y), 
-                            fixtures=b2FixtureDef(shape=b2CircleShape(radius=1), density=100)
+                            fixtures=b2FixtureDef(shape=b2CircleShape(radius=self.PLAYER_RADIUS), density=10000)
                             )
         self.body.sleepingAllowed = False
         self.body.fixedRotation = True
