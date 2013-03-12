@@ -15,6 +15,7 @@ class EntityManager(object):
             entity.move()
 
         self.world.Step(self.TIMESTEP, 6, 2)
+        self.world.ClearForces()
 
 
     # assumes player entity is in first index
@@ -38,13 +39,10 @@ class EntityManager(object):
         revJointDef = b2RevoluteJointDef(
                             bodyA = playerEntity.body,
                             bodyB = shieldEntity.body,
-                            anchor = (0, 0),
+                            anchor = playerEntity.body.worldCenter,
                             enableMotor = True,
-                            enableLimit = True,
-                            maxMotorTorque = 110,
-                            motorSpeed = 1,
-                            lowerAngle = -0.5 * b2_pi,
-                            higherAngle = 0.5 * b2_pi, )
+                            maxMotorTorque = 1000,
+                            motorSpeed = 0)
 
         joint = self.world.CreateJoint(revJointDef)
 

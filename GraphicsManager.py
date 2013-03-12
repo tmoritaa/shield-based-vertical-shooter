@@ -10,7 +10,7 @@ class GraphicsManager(object):
     @staticmethod
     def performScreenSpaceTransform(pos, transform):
         position = ( transform * pos ) * GraphicsManager.PIXELS_PER_METER
-        position = ( int( position[0] ), GraphicsManager.HEIGHT - int( position[1] ) )
+        position = ( int( round( position[0] ) ), GraphicsManager.HEIGHT - int( round( position[1] ) ) )
         return position
 
 

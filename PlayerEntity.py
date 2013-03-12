@@ -14,7 +14,7 @@ class PlayerEntity(Entity):
     def _initBody(self, x, y):
         self.body = self.world.CreateDynamicBody(
                             position=(x, y), 
-                            fixtures=b2FixtureDef(shape=b2CircleShape(radius=1), density=1)
+                            fixtures=b2FixtureDef(shape=b2CircleShape(radius=1), density=100)
                             )
         self.body.sleepingAllowed = False
         self.body.fixedRotation = True
