@@ -3,9 +3,10 @@ from Entity import *
 import TypeEnums
 
 class EnemyEntity(Entity):
-    def __init__(self, world, x, y):
+    def __init__(self, world, x, y, movePattern):
         super(EnemyEntity, self).__init__(world, TypeEnums.TYPE_ENEMY)
         self.body = None
+        self.MovePattern = movePattern
         self._initBody(x, y)
 
 
@@ -19,3 +20,8 @@ class EnemyEntity(Entity):
         self.body.sleepingAllowed = False
         self.body.fixedRotation = True
         self.body.userData = self
+
+
+    def move(self):
+       self.MovePattern(self) 
+

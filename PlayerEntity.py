@@ -37,7 +37,7 @@ class PlayerEntity(Entity):
         return (x, y)
 
 
-    def _determineAndSetPlayerVelocity(self):
+    def move(self):
         velX = 0
         velY = 0
         upVal = self.buttonDownOrder['u']
@@ -55,10 +55,6 @@ class PlayerEntity(Entity):
             velX = 5
 
         self._setPlayerVelocity(velX, velY)
-
-
-    def move(self):
-        self._determineAndSetPlayerVelocity()
 
 
     def handleInput(self, event):

@@ -2,6 +2,7 @@ from Box2D import *
 from PlayerEntity import *
 from ShieldEntity import *
 from EnemyEntity import *
+import EnemyEntityMovePatterns
 
 class EntityFactory(object):
     def __init__(self, entityManager):
@@ -33,7 +34,7 @@ class EntityFactory(object):
 
     # later add string for specifying enemy type
     def createEnemyEntity(self, posX, posY):
-        enemyEntity = EnemyEntity(self.world, posX, posY)
+        enemyEntity = EnemyEntity(self.world, posX, posY, EnemyEntityMovePatterns.MovePatternBasic)
 
         self._entityManager.entityList.append(enemyEntity)
         self._entityManager.enemyEntityList.append(enemyEntity)
