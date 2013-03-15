@@ -22,6 +22,7 @@ class ShieldEntity(Entity):
                             position=( x, y ), 
                             fixtures=b2FixtureDef( categoryBits=TypeEnums.CATEGORY_PLAYER,
                                                    maskBits=TypeEnums.CATEGORY_ENEMY,
+                                                   isSensor=True,
                                                    shape=b2PolygonShape( box=( 1.0, 0.25 ) ), density=0.5 )
                             )
         self.body.sleepingAllowed = False

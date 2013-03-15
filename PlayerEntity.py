@@ -18,6 +18,7 @@ class PlayerEntity(Entity):
                             position=(x, y), 
                             fixtures=b2FixtureDef( categoryBits=TypeEnums.CATEGORY_PLAYER,
                                                     maskBits=TypeEnums.CATEGORY_ENEMY,
+                                                    isSensor=True,
                                                     shape=b2CircleShape(radius=self.PLAYER_RADIUS), density=10000)
                             )
         self.body.sleepingAllowed = False

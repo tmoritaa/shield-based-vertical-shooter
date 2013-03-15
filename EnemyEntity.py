@@ -15,6 +15,7 @@ class EnemyEntity(Entity):
                             position=(x, y), 
                             fixtures=b2FixtureDef(categoryBits=TypeEnums.CATEGORY_ENEMY,
                                                   maskBits=TypeEnums.CATEGORY_PLAYER,
+                                                  isSensor=True,
                                                   shape=b2CircleShape(radius=1), density=1)
                             )
         self.body.sleepingAllowed = False
