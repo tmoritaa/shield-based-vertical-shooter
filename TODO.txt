@@ -1,0 +1,3 @@
+- implement bullets and method of attacking
+- implement boomerang shield
+- implement levels and how they work
