@@ -16,6 +16,7 @@ class Game(object):
         while self._running:
             self._graphicsManager.drawEntities()
             self._entityManager.moveEntities()
+            self._entityManager.attackEntities()
             self._handleInput()
             self._entityManager.destroyEntities()
             self._clock.tick(self.FPS) 

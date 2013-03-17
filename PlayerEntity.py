@@ -17,7 +17,7 @@ class PlayerEntity(Entity):
         self.body = self.world.CreateDynamicBody(
                             position=(x, y), 
                             fixtures=b2FixtureDef( categoryBits=TypeEnums.CATEGORY_PLAYER,
-                                                    maskBits=TypeEnums.CATEGORY_ENEMY,
+                                                    maskBits=TypeEnums.CATEGORY_ENEMY | TypeEnums.CATEGORY_BULLET,
                                                     isSensor=True,
                                                     shape=b2CircleShape(radius=self.PLAYER_RADIUS), density=10000)
                             )

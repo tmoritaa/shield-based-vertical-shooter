@@ -2,7 +2,9 @@ from Box2D import *
 from PlayerEntity import *
 from ShieldEntity import *
 from EnemyEntity import *
+from BulletEntity import *
 import EnemyEntityMovePatterns
+import EnemyEntityAttackPatterns
 
 class EntityFactory(object):
     def __init__(self, entityManager):
@@ -34,7 +36,22 @@ class EntityFactory(object):
 
     # later add string for specifying enemy type
     def createEnemyEntity(self, posX, posY):
-        enemyEntity = EnemyEntity(self.world, posX, posY, EnemyEntityMovePatterns.MovePatternBasic)
+        enemyEntity = EnemyEntity(self.world, posX, posY, 
+                                    EnemyEntityMovePatterns.MovePatternBasic,
+                                    EnemyEntityAttackPatterns.AttackPatternBasic)
 
         self._entityManager.entityList.append(enemyEntity)
         self._entityManager.enemyEntityList.append(enemyEntity)
+
+
+    def createAttackEntity(self, attackPropertyList):
+        bulletEntityList = []
+        if attackPropertyList[0] == TypeEnums.BULLET_NORMAL:
+            bulletEntity0 = BulletEntity(self.world, attackPropertyList[1][0], attackPropertyList[1][1],
+                                         attackPropertyList[2], attackPropertyList[3])
+            bulletEntityList.append(bulletEntity0)
+
+        for bullet in bulletEntityList:
+            self._entityManager.entityList.append(bullet)
+            self._entityManager.bulletEntityList.append(bullet)
+        

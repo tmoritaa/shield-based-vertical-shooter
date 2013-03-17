@@ -1,3 +1,4 @@
 - implement bullets and method of attacking
 - implement boomerang shield
+- implement object destruction when out of screen at positive Y axis (bottom of screen)
 - implement levels and how they work

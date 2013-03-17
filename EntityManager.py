@@ -11,6 +11,7 @@ class EntityManager(object):
         self.playerEntity = None
         self.shieldEntity = None
         self.enemyEntityList = []
+        self.bulletEntityList = []
         self.destoryEntityList = []
         self._entityFactory = EntityFactory(self)
         self._initEntities()
@@ -26,6 +27,14 @@ class EntityManager(object):
 
     def destroyEntities(self):
         self.destoryEntityList = []
+
+
+    def attackEntities(self):
+        for entity in self.enemyEntityList:
+            attackPatternList = entity.attack()
+            for attack in attackPatternList:
+                self._entityFactory.createAttackEntity( attack )
+
 
     # assumes player entity is in first index
     def getPlayerEntity(self):
