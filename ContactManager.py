@@ -14,13 +14,30 @@ class ContactManager(object):
         self.contactListener = CustomContactListener(self)
 
 
+    # creates unique key from two integers, and uses that as key
+    # concept using Cantor Pairing functions as described at:
+    # www.stackoverflow.com/questions/919612/mapping-two-integers-to-one-in-a-unique-and-deterministic-way
+    def _createUniqueKey(self, _num1, _num2):
+        ls = [_num1, _num2]
+        for i in range(len(ls)):
+            val = ls[i]
+            if val >= 0:
+                ls[i] = val * 2
+            else:
+                ls[i] = -val * 2 - 1
+
+        dictKey = 0.5 * (ls[0] + ls[1]) * (ls[0] + ls[1] + 1) + ls[1] 
+        
+        return dictKey
+
+
     def addContacts(self, contacts):
-        dictKey = contacts[0].id + contacts[1].id
+        dictKey = self._createUniqueKey(contacts[0].id, contacts[1].id)
         self._entityContactsDict[dictKey] = ContactInfo(contacts[0], contacts[1])
 
 
     def removeContacts(self, contacts):
-        dictKey = contacts[0].id + contacts[1].id
+        dictKey = self._createUniqueKey(contacts[0].id, contacts[1].id)
         del self._entityContactsDict[dictKey]
 
 

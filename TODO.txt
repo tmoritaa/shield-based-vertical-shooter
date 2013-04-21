@@ -1,4 +1,4 @@
-- implement damage and object destruction
-- implement object destruction when out of screen at positive Y axis (bottom of screen)
-- implement levels and how they work
+- implement animation and object states
 - implement boomerang shield
+- implement levels and how they work
+- implement object destruction when out of screen at positive Y axis (bottom of screen)
