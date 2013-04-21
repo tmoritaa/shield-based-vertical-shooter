@@ -12,7 +12,7 @@ class EntityManager(object):
         self.shieldEntity = None
         self.enemyEntityList = []
         self.bulletEntityList = []
-        self.destoryEntityList = []
+        self.destroyEntityList = []
         self._entityFactory = EntityFactory(self)
         self._initEntities()
 
@@ -26,7 +26,7 @@ class EntityManager(object):
 
 
     def destroyEntities(self):
-        self.destoryEntityList = []
+        self.destroyEntityList = []
 
 
     def attackEntities(self):

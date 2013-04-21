@@ -36,7 +36,7 @@ class EntityFactory(object):
 
     # later add string for specifying enemy type
     def createEnemyEntity(self, posX, posY):
-        enemyEntity = EnemyEntity(self.world, posX, posY, 
+        enemyEntity = EnemyEntity(self.world, posX, posY, 3,
                                     EnemyEntityMovePatterns.MovePatternBasic,
                                     EnemyEntityAttackPatterns.AttackPatternBasic)
 

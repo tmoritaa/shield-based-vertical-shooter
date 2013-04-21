@@ -7,18 +7,37 @@ class CustomContactListener(b2ContactListener):
         self._entityManager = entityManager
 
     def BeginContact(self, contact):
-        #entityList = []
-        #entityA = contact.fixtureA.body.userData
-        #entityB = contact.fixtureB.body.userData
+        entityA = contact.fixtureA.body.userData
+        entityB = contact.fixtureB.body.userData
 
-        #if entityA.type == TypeEnums.TYPE_ENEMY and entityB.type == TypeEnums.TYPE_SHIELD:
-            #self._entityManager.destoryEntityList.append(entityA)
-            #self._entityManager.enemyEntityList.remove(entityA)
-            #self._entityManager.entityList.remove(entityA)
-        #elif entityA.type == TypeEnums.TYPE_SHIELD and entityB.type == TypeEnums.TYPE_ENEMY:
-            #self._entityManager.destoryEntityList.append(entityB)
-            #self._entityManager.enemyEntityList.remove(entityB)
-            #self._entityManager.entityList.remove(entityB)
+        playerEntity = None
+        bulletEntity = None
+        shieldEntity = None
+        enemyEntity = None
+
+        if entityA.type == TypeEnums.TYPE_PLAYER:
+            playerEntity = entityA
+        elif entityA.type == TypeEnums.TYPE_SHIELD:
+            shieldEntity = entityA
+        elif entityA.type == TypeEnums.TYPE_BULLET:
+            bulletEntity = entityA
+        elif entityA.type == TypeEnums.TYPE_ENEMY:
+            enemyEntity = entityA
+
+        if entityB.type == TypeEnums.TYPE_PLAYER:
+            playerEntity = entityB
+        elif entityB.type == TypeEnums.TYPE_SHIELD:
+            shieldEntity = entityB
+        elif entityB.type == TypeEnums.TYPE_BULLET:
+            bulletEntity = entityB
+        elif entityB.type == TypeEnums.TYPE_ENEMY:
+            enemyEntity = entityB
+
+        if bulletEntity and shieldEntity:
+            self._entityManager.destroyEntityList.append(bulletEntity)
+            self._entityManager.bulletEntityList.remove(bulletEntity)
+            self._entityManager.entityList.remove(bulletEntity)
+
         print "begin"
 
     def EndContact(self, contact):
@@ -26,9 +45,7 @@ class CustomContactListener(b2ContactListener):
         pass
 
     def PreSolve(self, contact, oldManifold):
-        print "presolve"
         pass
 
     def PostSolve(self, contact, impulse):
-        print "postsolve"
         pass
