@@ -10,11 +10,14 @@ class EntityFactory(object):
     def __init__(self, entityManager):
         self._entityManager = entityManager
         self.world = self._entityManager.world
+        self._entityId = 0
 
     def createPlayerAndShieldEntity(self, playerX, playerY):
-        playerEntity = PlayerEntity(self.world, playerX, playerY)
+        self._entityId += 1
+        playerEntity = PlayerEntity(self._entityId, 1, 0, True, self.world, playerX, playerY)
 
-        shieldEntity = ShieldEntity(self.world, playerEntity)
+        self._entityId += 1
+        shieldEntity = ShieldEntity(self._entityId, 1, 1, False, self.world, playerEntity)
 
         revJointDef = b2RevoluteJointDef(
                             bodyA = playerEntity.body,
@@ -36,7 +39,8 @@ class EntityFactory(object):
 
     # later add string for specifying enemy type
     def createEnemyEntity(self, posX, posY):
-        enemyEntity = EnemyEntity(self.world, posX, posY, 3,
+        self._entityId += 1
+        enemyEntity = EnemyEntity(self._entityId, 3, 1, True, self.world, posX, posY, 
                                     EnemyEntityMovePatterns.MovePatternBasic,
                                     EnemyEntityAttackPatterns.AttackPatternBasic)
 
@@ -46,8 +50,10 @@ class EntityFactory(object):
 
     def createAttackEntity(self, attackPropertyList):
         bulletEntityList = []
+        self._entityId += 1
         if attackPropertyList[0] == TypeEnums.BULLET_NORMAL:
-            bulletEntity0 = BulletEntity(self.world, attackPropertyList[1][0], attackPropertyList[1][1],
+            bulletEntity0 = BulletEntity(self._entityId, 1, 1, True, 
+                                         self.world, attackPropertyList[1][0], attackPropertyList[1][1],
                                          attackPropertyList[2], attackPropertyList[3])
             bulletEntityList.append(bulletEntity0)
 

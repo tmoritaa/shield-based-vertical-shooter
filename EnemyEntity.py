@@ -3,10 +3,9 @@ from Entity import *
 import TypeEnums
 
 class EnemyEntity(Entity):
-    def __init__(self, world, x, y, health, movePattern, attackPattern):
-        super(EnemyEntity, self).__init__(world, TypeEnums.TYPE_ENEMY)
+    def __init__(self, id, health, damage, damageable, world, x, y, movePattern, attackPattern):
+        super(EnemyEntity, self).__init__(id, health, damage, damageable, world, TypeEnums.TYPE_ENEMY)
         self.body = None
-        self.health = health
         self.MovePattern = movePattern
         self.AttackPattern = attackPattern
         self._initBody(x, y)

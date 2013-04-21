@@ -1,18 +1,16 @@
 from Box2D import *
 from EntityFactory import *
-from CustomContactListener import *
 
 class EntityManager(object):
-    def __init__(self, _fps):
+    def __init__(self, _fps, _contactListener):
         self.TIMESTEP = 1.0 / _fps 
-        self.world = b2World(contactListener=CustomContactListener(self), 
+        self.world = b2World(contactListener=_contactListener,
                                 gravity=(0, 0), doSleep=False)
         self.entityList = [] # for now. Change to object list and change graphics manager to retrieve body from object
         self.playerEntity = None
         self.shieldEntity = None
         self.enemyEntityList = []
         self.bulletEntityList = []
-        self.destroyEntityList = []
         self._entityFactory = EntityFactory(self)
         self._initEntities()
 
@@ -26,8 +24,22 @@ class EntityManager(object):
 
 
     def destroyEntities(self):
-        self.destroyEntityList = []
+        destroyList = []
+        for entity in self.entityList:
+            if entity.health <= 0:
+                destroyList.append(entity)
 
+        for entity in destroyList:
+            self.entityList.remove(entity)
+            
+            if entity.type == TypeEnums.TYPE_PLAYER:
+                self.playerEntity = None
+            elif entity.type == TypeEnums.TYPE_SHIELD:
+                self.shieldEntity = None
+            elif entity.type == TypeEnums.TYPE_BULLET:
+                self.bulletEntityList.remove(entity)
+            elif entity.type == TypeEnums.TYPE_ENEMY:
+                self.enemyEntityList.remove(entity)
 
     def attackEntities(self):
         for entity in self.enemyEntityList:
