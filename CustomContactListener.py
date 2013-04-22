@@ -11,7 +11,6 @@ class CustomContactListener(b2ContactListener):
         entityB = contact.fixtureB.body.userData
 
         self._contactManager.addContacts((entityA, entityB))
-
         print "begin"
 
     def EndContact(self, contact):

@@ -20,6 +20,7 @@ class Game(object):
             self._entityManager.moveEntities()
             self._entityManager.attackEntities()
             self._contactManager.performContactAction()
+            self._entityManager.stateTransitionEntities()
             self._entityManager.destroyEntities()
             self._handleInput()
             self._clock.tick(self.FPS) 
@@ -32,6 +33,8 @@ class Game(object):
             elif event.type == pygame.KEYDOWN or event.type == pygame.KEYUP:
                 if event.key == pygame.K_ESCAPE:
                     self._running = False
+                elif event.key == pygame.K_p:
+                    print self._entityManager.getPlayerEntity().graphicsProperties.currAnimDuration
                 else:
                     self._entityManager.getPlayerEntity().handleInput(event)
             elif event.type == pygame.MOUSEMOTION:

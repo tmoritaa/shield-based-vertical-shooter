@@ -44,13 +44,12 @@ class ContactManager(object):
     def performContactAction(self):
         for contactsInfo in self._entityContactsDict.values():
             if contactsInfo.damageFrameCount == 0:
-                if contactsInfo.contactA.damageable and contactsInfo.contactB.health > 0:
-                    contactsInfo.contactA.health -= contactsInfo.contactB.damage
+                if contactsInfo.contactA.gameProperties.damageable and contactsInfo.contactB.gameProperties.health > 0:
+                    contactsInfo.contactA.gameProperties.health -= contactsInfo.contactB.gameProperties.damage
                 
-                if contactsInfo.contactB.damageable and contactsInfo.contactA.health > 0:
-                    contactsInfo.contactB.health -= contactsInfo.contactA.damage
+                if contactsInfo.contactB.gameProperties.damageable and contactsInfo.contactA.gameProperties.health > 0:
+                    contactsInfo.contactB.gameProperties.health -= contactsInfo.contactA.gameProperties.damage
 
             contactsInfo.damageFrameCount += 1 
             contactsInfo.damageFrameCount %= self.DAMAGE_FRAME_COUNT_MOD
-
 

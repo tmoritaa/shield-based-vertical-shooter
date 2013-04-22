@@ -1,5 +1,6 @@
 from Box2D import *
 from EntityFactory import *
+import TypeEnums
 
 class EntityManager(object):
     def __init__(self, _fps, _contactListener):
@@ -23,23 +24,51 @@ class EntityManager(object):
         self.world.ClearForces()
 
 
-    def destroyEntities(self):
-        destroyList = []
-        for entity in self.entityList:
-            if entity.health <= 0:
-                destroyList.append(entity)
+    # TODO: currently even if entities are destroyed here,
+    # if they are still in contact with another entity and 
+    # the ContactManager still includes them in it's dict,
+    # the entity being destroyed here will not actually be
+    # destroyed until the contact is ended. Should be fixed
+    def destroyEntity(self, entity):
+        self.entityList.remove(entity)
+        
+        if entity.type == TypeEnums.TYPE_PLAYER:
+            self.playerEntity = None
+        elif entity.type == TypeEnums.TYPE_SHIELD:
+            self.shieldEntity = None
+        elif entity.type == TypeEnums.TYPE_BULLET:
+            self.bulletEntityList.remove(entity)
+        elif entity.type == TypeEnums.TYPE_ENEMY:
+            self.enemyEntityList.remove(entity)
 
-        for entity in destroyList:
-            self.entityList.remove(entity)
-            
-            if entity.type == TypeEnums.TYPE_PLAYER:
-                self.playerEntity = None
-            elif entity.type == TypeEnums.TYPE_SHIELD:
-                self.shieldEntity = None
-            elif entity.type == TypeEnums.TYPE_BULLET:
-                self.bulletEntityList.remove(entity)
-            elif entity.type == TypeEnums.TYPE_ENEMY:
-                self.enemyEntityList.remove(entity)
+
+    def destroyEntities(self):
+        destroyEntityList = []
+        for entity in self.entityList:
+            if entity.graphicsProperties.graphicState == TypeEnums.GRAPHIC_STATE_DEAD:
+                destroyEntityList.append(entity)
+
+        for entity in destroyEntityList:
+            self.destroyEntity(entity)
+
+
+    def stateTransitionEntities(self):
+        for entity in self.entityList:
+            if entity.gameProperties.health <= 0 \
+                and (entity.graphicsProperties.graphicState != TypeEnums.GRAPHIC_STATE_DYING
+                and entity.graphicsProperties.graphicState != TypeEnums.GRAPHIC_STATE_DEAD):
+                entity.setGraphicsState(TypeEnums.GRAPHIC_STATE_DYING)
+
+            if entity.graphicsProperties.stateTransitionExists():
+                totalAnimDur = 0
+                if entity.graphicsProperties.animDurationExists():
+                    totalAnimDur = entity.graphicsProperties.getCurrentAnimDuration()
+                
+                if entity.graphicsProperties.currAnimDuration >= totalAnimDur:
+                    entity.setGraphicsState(entity.graphicsProperties.getNextAnimState())
+
+            entity.graphicsProperties.currAnimDuration += 1
+
 
     def attackEntities(self):
         for entity in self.enemyEntityList:

@@ -4,7 +4,10 @@ import TypeEnums
 
 class BulletEntity(Entity):
     def __init__(self, id, health, damage, damageable, world, x, y, movePattern, attackPattern):
-        super(BulletEntity, self).__init__(id, health, damage, damageable, world, TypeEnums.TYPE_BULLET)
+        super(BulletEntity, self).__init__(id, health, damage, damageable, 
+                {},
+                {},
+                world, TypeEnums.TYPE_BULLET)
         self.body = None
         self.MovePattern = movePattern
         self.AttackPattern = attackPattern

@@ -1,5 +1,6 @@
 from Box2D import *
 import pygame
+import TypeEnums
 
 class GraphicsManager(object):
     PIXELS_PER_METER = 20
@@ -30,16 +31,22 @@ class GraphicsManager(object):
         self._screen.fill((0, 0, 0, 0))
 
         for entity in self._entityManager.entityList:
+            colour = (0, 0, 0, 255)
+            if entity.graphicsProperties.graphicState == TypeEnums.GRAPHIC_STATE_NORMAL:
+                colour = (255, 255, 255, 255)
+            elif entity.graphicsProperties.graphicState == TypeEnums.GRAPHIC_STATE_DYING:
+                colour = (255, 0, 0, 255)
+
             for fixture in entity.body.fixtures:
                 shape = fixture.shape
                 if isinstance(shape, b2CircleShape):
                     position = GraphicsManager.performScreenSpaceTransform( shape.pos, entity.body.transform )
                     radius = int(round(shape.radius * GraphicsManager.PIXELS_PER_METER))
-                    pygame.draw.circle(self._screen, (255, 255, 255, 255), position, radius)
+                    pygame.draw.circle(self._screen, colour, position, radius)
                 else:
                     vertices = [GraphicsManager.performScreenSpaceTransform( v, entity.body.transform ) 
                                 for v in shape.vertices]
-                    pygame.draw.polygon(self._screen, (255, 255, 255, 255), vertices)
+                    pygame.draw.polygon(self._screen, colour, vertices)
 
         pygame.display.flip()
 

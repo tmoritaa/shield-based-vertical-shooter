@@ -1,4 +1,5 @@
-- implement animation and object states
-- implement boomerang shield
+- implement entity animations
 - implement levels and how they work
-- implement object destruction when out of screen at positive Y axis (bottom of screen)
+- implement boomerang shield
+- implement object destruction when out of screen and leaving screen
+- resolve some TODOs

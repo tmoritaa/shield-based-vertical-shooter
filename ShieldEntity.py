@@ -7,7 +7,10 @@ import TypeEnums
 
 class ShieldEntity(Entity):
     def __init__(self, id, health, damage, damageable, world, playerEntity):
-        super( ShieldEntity, self ).__init__( id, health, damage, damageable, world, TypeEnums.TYPE_SHIELD )
+        super( ShieldEntity, self ).__init__( id, health, damage, damageable, 
+                {},
+                {},
+                world, TypeEnums.TYPE_SHIELD )
         self.SHIELD_RADIUS = 1.5
         self.SHIELD_RADIAL_VEL_MOD = 20
         self._playerEntity = playerEntity

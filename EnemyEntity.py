@@ -4,7 +4,12 @@ import TypeEnums
 
 class EnemyEntity(Entity):
     def __init__(self, id, health, damage, damageable, world, x, y, movePattern, attackPattern):
-        super(EnemyEntity, self).__init__(id, health, damage, damageable, world, TypeEnums.TYPE_ENEMY)
+        super(EnemyEntity, self).__init__(id, health, damage, damageable, 
+                {
+                    TypeEnums.GRAPHIC_STATE_DYING  : 300
+                },
+                {},
+                world, TypeEnums.TYPE_ENEMY)
         self.body = None
         self.MovePattern = movePattern
         self.AttackPattern = attackPattern

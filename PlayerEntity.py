@@ -5,7 +5,12 @@ import TypeEnums
 
 class PlayerEntity(Entity):
     def __init__(self, id, health, damage, damageable, world, x, y):
-        super(PlayerEntity, self).__init__(id, health, damage, damageable, world, TypeEnums.TYPE_PLAYER)
+        super(PlayerEntity, self).__init__(id, health, damage, damageable, 
+                {
+                    TypeEnums.GRAPHIC_STATE_DYING  : 300
+                },
+                {},
+                world, TypeEnums.TYPE_PLAYER)
         self.PLAYER_RADIUS = 0.5
         self.body = None
         self.buttonDownOrder = {"u" : -1, "d" : -1, "l" : -1, "r" : -1}
