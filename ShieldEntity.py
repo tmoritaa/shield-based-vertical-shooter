@@ -2,12 +2,12 @@ import pygame
 import math
 from Box2D import *
 from Entity import *
-import GraphicsManager
+import GrManager
 import TypeEnums
 
 class ShieldEntity(Entity):
-    def __init__(self, id, health, damage, damageable, world, playerEntity):
-        super( ShieldEntity, self ).__init__( id, health, damage, damageable, 
+    def __init__(self, id, health, dmg, dmgable, world, playerEntity):
+        super( ShieldEntity, self ).__init__( id, health, dmg, dmgable, 
                 {},
                 {},
                 world, TypeEnums.TYPE_SHIELD )
@@ -22,12 +22,13 @@ class ShieldEntity(Entity):
 
     def _initBody(self, x, y):
         self.body = self.world.CreateDynamicBody(
-                            position=( x, y ), 
-                            fixtures=b2FixtureDef( categoryBits=TypeEnums.CATEGORY_PLAYER,
-                                                   maskBits=TypeEnums.CATEGORY_ENEMY | TypeEnums.CATEGORY_BULLET,
-                                                   isSensor=True,
-                                                   shape=b2PolygonShape( box=( 1.0, 0.25 ) ), density=0.5 )
-                            )
+                        position = (x, y), 
+                        fixtures = b2FixtureDef( 
+                            categoryBits = TypeEnums.CAT_PLAYER,
+                            maskBits = TypeEnums.CAT_ENEMY | TypeEnums.CAT_BULLET,
+                            isSensor = True,
+                            shape = b2PolygonShape(box = (1.0, 0.25)), 
+                                                   density = 0.5))
         self.body.sleepingAllowed = False
         self.body.fixedRotation = False
         self.body.userData = self
@@ -52,8 +53,10 @@ class ShieldEntity(Entity):
         dist_temp2 = mouseAngle_alt - jointAngle
         dist_temp3 = mouseAngle - jointAngle_alt
 
-        final_dist = dist_temp1 if abs(dist_temp1) < abs(dist_temp2) else dist_temp2
-        final_dist = final_dist if abs(final_dist) < abs(dist_temp3) else dist_temp3
+        final_dist = dist_temp1 if abs(dist_temp1) < abs(dist_temp2) \
+                        else dist_temp2
+        final_dist = final_dist if abs(final_dist) < abs(dist_temp3) \
+                        else dist_temp3
 
         self._revJoint.motorSpeed = final_dist * self.SHIELD_RADIAL_VEL_MOD 
 
@@ -66,10 +69,11 @@ class ShieldEntity(Entity):
     def handleInput(self, event):
         mousePos = event.pos
         playerBody = self._playerEntity.body
-        tempPlayerPos = GraphicsManager.GraphicsManager.performScreenSpaceTransform( 
-                    playerBody.position, playerBody.transform )
+        tempPlayerPos = GrManager.GrManager.performScreenSpaceTransform( 
+                    playerBody.position, playerBody.transform)
 
-        playerPos = ( tempPlayerPos[0] / 2.0, ( tempPlayerPos[1] + GraphicsManager.GraphicsManager.HEIGHT ) / 2.0 )
+        playerPos = (tempPlayerPos[0] / 2.0, 
+                    (tempPlayerPos[1] + GrManager.GrManager.HEIGHT) / 2.0)
 
         # performScreenSpaceTransform causes y to be inverted
         # invert it back

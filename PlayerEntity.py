@@ -4,10 +4,10 @@ from Entity import *
 import TypeEnums
 
 class PlayerEntity(Entity):
-    def __init__(self, id, health, damage, damageable, world, x, y):
-        super(PlayerEntity, self).__init__(id, health, damage, damageable, 
+    def __init__(self, id, health, dmg, dmgable, world, x, y):
+        super(PlayerEntity, self).__init__(id, health, dmg, dmgable, 
                 {
-                    TypeEnums.GRAPHIC_STATE_DYING  : 300
+                    TypeEnums.GR_STATE_DYING  : 300
                 },
                 {},
                 world, TypeEnums.TYPE_PLAYER)
@@ -20,12 +20,13 @@ class PlayerEntity(Entity):
 
     def _initBody(self, x, y):
         self.body = self.world.CreateDynamicBody(
-                            position=(x, y), 
-                            fixtures=b2FixtureDef( categoryBits=TypeEnums.CATEGORY_PLAYER,
-                                                    maskBits=TypeEnums.CATEGORY_ENEMY | TypeEnums.CATEGORY_BULLET,
-                                                    isSensor=True,
-                                                    shape=b2CircleShape(radius=self.PLAYER_RADIUS), density=10000)
-                            )
+                        position = (x, y), 
+                        fixtures = b2FixtureDef( 
+                            categoryBits = TypeEnums.CAT_PLAYER,
+                            maskBits = TypeEnums.CAT_ENEMY | TypeEnums.CAT_BULLET,
+                            isSensor = True,
+                            shape = b2CircleShape(radius = self.PLAYER_RADIUS), 
+                                                  density=10000))
         self.body.sleepingAllowed = False
         self.body.fixedRotation = True
         self.body.userData = self

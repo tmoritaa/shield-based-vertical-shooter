@@ -3,14 +3,13 @@ from Entity import *
 import TypeEnums
 
 class BulletEntity(Entity):
-    def __init__(self, id, health, damage, damageable, world, x, y, movePattern, attackPattern):
-        super(BulletEntity, self).__init__(id, health, damage, damageable, 
-                {},
-                {},
-                world, TypeEnums.TYPE_BULLET)
+    def __init__(self, id, health, dmg, dmgable, world, x, y, 
+                 movePattern, atkPattern):
+        super(BulletEntity, self).__init__(id, health, dmg, dmgable, {}, {}, 
+                                           world, TypeEnums.TYPE_BULLET)
         self.body = None
         self.MovePattern = movePattern
-        self.AttackPattern = attackPattern
+        self.AtkPattern = atkPattern
         self._initBody(x, y)
 
 
@@ -18,10 +17,12 @@ class BulletEntity(Entity):
         self.body = self.world.CreateDynamicBody(
                             position=(x, y), 
                             bullet=True,
-                            fixtures=b2FixtureDef(categoryBits=TypeEnums.CATEGORY_BULLET,
-                                                  maskBits=TypeEnums.CATEGORY_PLAYER,
-                                                  isSensor=True,
-                                                  shape=b2CircleShape(radius=0.5), density=1)
+                            fixtures=b2FixtureDef(
+                                categoryBits=TypeEnums.CAT_BULLET,
+                                maskBits=TypeEnums.CAT_PLAYER,
+                                isSensor=True,
+                                shape=b2CircleShape(radius=0.5), 
+                                density=1)
                             )
         self.body.sleepingAllowed = False
         self.body.fixedRotation = True
@@ -32,5 +33,5 @@ class BulletEntity(Entity):
        self.MovePattern(self) 
 
 
-    def attack(self):
-        return self.AttackPattern(self)
+    def atk(self):
+        return self.AtkPattern(self)

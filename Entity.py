@@ -1,24 +1,26 @@
-import GraphicsDefines
+import GrDefines
 import TypeEnums
 
-class EntityGameProperties(object):
-    def __init__(self, health, damage, damageable):
+class EntityGameProps(object):
+    def __init__(self, health, dmg, dmgable):
         self.health = health
-        self.damage = damage
-        self.damageable = damageable
+        self.dmg = dmg
+        self.dmgable = dmgable
 
 
-# TODO: graphicState really isn't specific to graphics, but more like entity state in general
+# TODO: grState really isn't specific to gr, but more like entity state in general
 #       should move out
-class EntityGraphicsProperties(object):
+class EntityGrProps(object):
     def __init__(self, animDurations, animStateTransitions):
         # defaults
         self.currAnimDuration = 0 # also used to coordinate death timing
-        self.graphicState = TypeEnums.GRAPHIC_STATE_NORMAL
+        self.grState = TypeEnums.GR_STATE_NORMAL
         self.animDurations = {}
         self.animStateTransitions = {}
-        self.animDurations[TypeEnums.GRAPHIC_STATE_DYING] = GraphicsDefines.GRAPHIC_DUR_DYING_DEFAULT 
-        self.animStateTransitions[TypeEnums.GRAPHIC_STATE_DYING] = TypeEnums.GRAPHIC_STATE_DEAD 
+        self.animDurations[TypeEnums.GR_STATE_DYING] = \
+            GrDefines.GR_DUR_DYING_DEFAULT 
+        self.animStateTransitions[TypeEnums.GR_STATE_DYING] = \
+            TypeEnums.GR_STATE_DEAD 
 
         # if non default, set here
         for key in animDurations.keys():
@@ -28,29 +30,30 @@ class EntityGraphicsProperties(object):
             self.animStateTransitions[key] = animStateTransitions[key]
 
     def getNextAnimState(self):
-        return self.animStateTransitions[self.graphicState]
+        return self.animStateTransitions[self.grState]
 
     def getCurrentAnimDuration(self):
-        return self.animDurations[self.graphicState]
+        return self.animDurations[self.grState]
 
     def animDurationExists(self):
-        if self.graphicState in self.animDurations:
+        if self.grState in self.animDurations:
             return True
 
         return False
 
     def stateTransitionExists(self):
-        if self.graphicState in self.animStateTransitions:
+        if self.grState in self.animStateTransitions:
             return True
 
         return False
 
 
 class Entity(object):
-    def __init__(self, id, health, damage, damageable, animDuration, animStateTransitions, world, type):
+    def __init__(self, id, health, dmg, dmgable, animDuration, 
+                 animStateTransitions, world, type):
         self.id = id
-        self.gameProperties     = EntityGameProperties(health, damage, damageable)
-        self.graphicsProperties = EntityGraphicsProperties(animDuration, animStateTransitions)
+        self.gameProps     = EntityGameProps(health, dmg, dmgable)
+        self.grProps = EntityGrProps(animDuration, animStateTransitions)
         self.world = world
         self.type = type
         self.body = None
@@ -62,6 +65,6 @@ class Entity(object):
     def move(self):
         pass
 
-    def setGraphicsState(self, graphicState):
-        self.graphicsProperties.graphicState = graphicState
-        self.graphicsProperties.animDuration = 0
+    def setGrState(self, grState):
+        self.grProps.grState = grState
+        self.grProps.animDuration = 0

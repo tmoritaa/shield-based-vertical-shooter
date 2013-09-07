@@ -4,7 +4,7 @@ class ContactInfo(object):
     def __init__(self, contactA, contactB):
         self.contactA = contactA
         self.contactB = contactB
-        self.damageFrameCount = 0
+        self.dmgFrameCount = 0
         
 
 class ContactManager(object):
@@ -33,7 +33,8 @@ class ContactManager(object):
 
     def addContacts(self, contacts):
         dictKey = self._createUniqueKey(contacts[0].id, contacts[1].id)
-        self._entityContactsDict[dictKey] = ContactInfo(contacts[0], contacts[1])
+        self._entityContactsDict[dictKey] = ContactInfo(contacts[0], 
+                                                        contacts[1])
 
 
     def removeContacts(self, contacts):
@@ -43,13 +44,17 @@ class ContactManager(object):
 
     def performContactAction(self):
         for contactsInfo in self._entityContactsDict.values():
-            if contactsInfo.damageFrameCount == 0:
-                if contactsInfo.contactA.gameProperties.damageable and contactsInfo.contactB.gameProperties.health > 0:
-                    contactsInfo.contactA.gameProperties.health -= contactsInfo.contactB.gameProperties.damage
+            if contactsInfo.dmgFrameCount == 0:
+                if contactsInfo.contactA.gameProps.dmgable and \
+                   contactsInfo.contactB.gameProps.health > 0:
+                    contactsInfo.contactA.gameProps.health -= \
+                        contactsInfo.contactB.gameProps.dmg
                 
-                if contactsInfo.contactB.gameProperties.damageable and contactsInfo.contactA.gameProperties.health > 0:
-                    contactsInfo.contactB.gameProperties.health -= contactsInfo.contactA.gameProperties.damage
+                if contactsInfo.contactB.gameProps.dmgable and \
+                   contactsInfo.contactA.gameProps.health > 0:
+                    contactsInfo.contactB.gameProps.health -= \
+                        contactsInfo.contactA.gameProps.dmg
 
-            contactsInfo.damageFrameCount += 1 
-            contactsInfo.damageFrameCount %= self.DAMAGE_FRAME_COUNT_MOD
+            contactsInfo.dmgFrameCount += 1 
+            contactsInfo.dmgFrameCount %= self.DAMAGE_FRAME_COUNT_MOD
 
